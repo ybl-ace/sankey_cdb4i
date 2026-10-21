@@ -1,0 +1,553 @@
+{
+    "nivel": "Educación Básica",
+    "cohorte_anio": "2016",
+    "nodos": [
+        {
+            "id": 0,
+            "etiqueta": "2016: INSUFICIENTE",
+            "color": "#FFC0CB"
+        },
+        {
+            "id": 1,
+            "etiqueta": "2017: MEDIO",
+            "color": "#ADD8E6"
+        },
+        {
+            "id": 2,
+            "etiqueta": "2017: MEDIO-BAJO",
+            "color": "#00008B"
+        },
+        {
+            "id": 3,
+            "etiqueta": "2017: INSUFICIENTE",
+            "color": "#FFC0CB"
+        },
+        {
+            "id": 4,
+            "etiqueta": "2017: SIN CATEGORIA: BAJA MATRICULA",
+            "color": "#E5E5E5"
+        },
+        {
+            "id": 5,
+            "etiqueta": "2017: SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "color": "#E5E5E5"
+        },
+        {
+            "id": 6,
+            "etiqueta": "2017: SIN INFO",
+            "color": "#D3D3D3"
+        },
+        {
+            "id": 7,
+            "etiqueta": "2018: MEDIO",
+            "color": "#ADD8E6"
+        },
+        {
+            "id": 8,
+            "etiqueta": "2018: MEDIO-BAJO",
+            "color": "#00008B"
+        },
+        {
+            "id": 9,
+            "etiqueta": "2018: MEDIO-BAJO (NUEVO)",
+            "color": "#00008B"
+        },
+        {
+            "id": 10,
+            "etiqueta": "2018: INSUFICIENTE",
+            "color": "#FFC0CB"
+        },
+        {
+            "id": 11,
+            "etiqueta": "2018: SIN CATEGORIA: BAJA MATRICULA",
+            "color": "#E5E5E5"
+        },
+        {
+            "id": 12,
+            "etiqueta": "2018: SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "color": "#E5E5E5"
+        },
+        {
+            "id": 13,
+            "etiqueta": "2018: SIN INFO",
+            "color": "#D3D3D3"
+        },
+        {
+            "id": 14,
+            "etiqueta": "2019: ALTO",
+            "color": "#228B22"
+        },
+        {
+            "id": 15,
+            "etiqueta": "2019: MEDIO",
+            "color": "#ADD8E6"
+        },
+        {
+            "id": 16,
+            "etiqueta": "2019: MEDIO-BAJO",
+            "color": "#00008B"
+        },
+        {
+            "id": 17,
+            "etiqueta": "2019: INSUFICIENTE",
+            "color": "#FFC0CB"
+        },
+        {
+            "id": 18,
+            "etiqueta": "2019: SIN CATEGORIA: BAJA MATRICULA",
+            "color": "#E5E5E5"
+        },
+        {
+            "id": 19,
+            "etiqueta": "2019: SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "color": "#E5E5E5"
+        },
+        {
+            "id": 20,
+            "etiqueta": "2019: SIN INFO",
+            "color": "#D3D3D3"
+        }
+    ],
+    "enlaces": [
+        {
+            "origen_anio": 2016,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2017,
+            "destino_categoria": "INSUFICIENTE",
+            "cantidad": 467,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2016,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2017,
+            "destino_categoria": "MEDIO",
+            "cantidad": 5,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2016,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2017,
+            "destino_categoria": "MEDIO-BAJO",
+            "cantidad": 141,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2016,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2017,
+            "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "cantidad": 4,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2016,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2017,
+            "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "cantidad": 11,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2016,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2017,
+            "destino_categoria": "SIN INFO",
+            "cantidad": 5,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2018,
+            "destino_categoria": "INSUFICIENTE",
+            "cantidad": 218,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2018,
+            "destino_categoria": "MEDIO",
+            "cantidad": 26,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2018,
+            "destino_categoria": "MEDIO-BAJO",
+            "cantidad": 169,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2018,
+            "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "cantidad": 13,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2018,
+            "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "cantidad": 4,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2018,
+            "destino_categoria": "SIN INFO",
+            "cantidad": 37,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "MEDIO",
+            "destino_anio": 2018,
+            "destino_categoria": "INSUFICIENTE",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "MEDIO",
+            "destino_anio": 2018,
+            "destino_categoria": "MEDIO",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "MEDIO",
+            "destino_anio": 2018,
+            "destino_categoria": "MEDIO-BAJO",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "MEDIO",
+            "destino_anio": 2018,
+            "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "cantidad": 2,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "MEDIO-BAJO",
+            "destino_anio": 2018,
+            "destino_categoria": "INSUFICIENTE",
+            "cantidad": 30,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "MEDIO-BAJO",
+            "destino_anio": 2018,
+            "destino_categoria": "MEDIO",
+            "cantidad": 23,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "MEDIO-BAJO",
+            "destino_anio": 2018,
+            "destino_categoria": "MEDIO-BAJO",
+            "cantidad": 85,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "MEDIO-BAJO",
+            "destino_anio": 2018,
+            "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "cantidad": 3,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "destino_anio": 2018,
+            "destino_categoria": "INSUFICIENTE",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "destino_anio": 2018,
+            "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "cantidad": 2,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "destino_anio": 2018,
+            "destino_categoria": "SIN INFO",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "destino_anio": 2018,
+            "destino_categoria": "INSUFICIENTE",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "destino_anio": 2018,
+            "destino_categoria": "MEDIO-BAJO (NUEVO)",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "destino_anio": 2018,
+            "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "cantidad": 5,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "destino_anio": 2018,
+            "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "cantidad": 3,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "destino_anio": 2018,
+            "destino_categoria": "SIN INFO",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2017,
+            "origen_categoria": "SIN INFO",
+            "destino_anio": 2018,
+            "destino_categoria": "SIN INFO",
+            "cantidad": 5,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2019,
+            "destino_categoria": "INSUFICIENTE",
+            "cantidad": 9,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2019,
+            "destino_categoria": "INSUFICIENTE",
+            "cantidad": 120,
+            "grupo_persistente": true
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2019,
+            "destino_categoria": "MEDIO",
+            "cantidad": 9,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2019,
+            "destino_categoria": "MEDIO-BAJO",
+            "cantidad": 109,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "cantidad": 2,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "INSUFICIENTE",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN INFO",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "MEDIO",
+            "destino_anio": 2019,
+            "destino_categoria": "ALTO",
+            "cantidad": 2,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "MEDIO",
+            "destino_anio": 2019,
+            "destino_categoria": "MEDIO",
+            "cantidad": 35,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "MEDIO",
+            "destino_anio": 2019,
+            "destino_categoria": "MEDIO-BAJO",
+            "cantidad": 11,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "MEDIO",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "cantidad": 2,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "MEDIO-BAJO",
+            "destino_anio": 2019,
+            "destino_categoria": "INSUFICIENTE",
+            "cantidad": 24,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "MEDIO-BAJO",
+            "destino_anio": 2019,
+            "destino_categoria": "MEDIO",
+            "cantidad": 60,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "MEDIO-BAJO",
+            "destino_anio": 2019,
+            "destino_categoria": "MEDIO-BAJO",
+            "cantidad": 167,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "MEDIO-BAJO",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "cantidad": 3,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "MEDIO-BAJO",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "MEDIO-BAJO (NUEVO)",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "destino_anio": 2019,
+            "destino_categoria": "MEDIO",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "cantidad": 19,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN INFO",
+            "cantidad": 4,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "destino_anio": 2019,
+            "destino_categoria": "INSUFICIENTE",
+            "cantidad": 2,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "cantidad": 4,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "SIN INFO",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA",
+            "cantidad": 1,
+            "grupo_persistente": false
+        },
+        {
+            "origen_anio": 2018,
+            "origen_categoria": "SIN INFO",
+            "destino_anio": 2019,
+            "destino_categoria": "SIN INFO",
+            "cantidad": 43,
+            "grupo_persistente": false
+        }
+    ]
+}
