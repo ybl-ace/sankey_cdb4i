@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sankey Minimalista - Educación Básica</title>
+    <!-- Importar Apache ECharts desde CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #FAFAFA;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0 5px 0;
+        }
+        .header p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+        #sankey-container {
+            width: 100%;
+            height: 800px;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Trayectorias de Desempeño: Educación Básica</h1>
+        <p>Cohorte 2016 - 2019</p>
+    </div>
+
+    <div id="sankey-container"></div>
+
+    <script>
+        const chartDom = document.getElementById('sankey-container');
+        const myChart = echarts.init(chartDom);
+
+        myChart.showLoading({ text: 'Cargando datos...', color: "#4A5568" });
+
+        // --- PALETA DE COLORES OFICIALES ---
+        const categoryColors = {
+            "ALTO": "#004b62",                               
+            "MEDIO": "#3a75c4",                              
+            "MEDIO-BAJO": "#797979",                         
+            "MEDIO-BAJO (NUEVO)": "#797979",                 
+            "INSUFICIENTE": "#ea5336",                       
+            "SIN CATEGORIA: BAJA MATRICULA": "#A0AEC0",      
+            "SIN CATEGORIA: FALTA DE INFORMACIÓN": "#CBD5E0",
+            "SIN INFO": "#E2E8F0"                            
+        };
+
+        // Orden jerárquico estricto de arriba hacia abajo
+        const categoryRank = {
+            "ALTO": 1,
+            "MEDIO": 2,
+            "MEDIO-BAJO": 3,
+            "MEDIO-BAJO (NUEVO)": 4,
+            "INSUFICIENTE": 5,
+            "SIN CATEGORIA: BAJA MATRICULA": 6,
+            "SIN CATEGORIA: FALTA DE INFORMACIÓN": 7,
+            "SIN INFO": 8
+        };
+
+        const rawData = {
+            "nivel": "Educación Básica",
+            "cohorte_anio": "2016",
+            "nodos": [
+                {"id": 0, "etiqueta": "2016: INSUFICIENTE", "color": "#FFC0CB"},
+                {"id": 1, "etiqueta": "2017: MEDIO", "color": "#ADD8E6"},
+                {"id": 2, "etiqueta": "2017: MEDIO-BAJO", "color": "#00008B"},
+                {"id": 3, "etiqueta": "2017: INSUFICIENTE", "color": "#FFC0CB"},
+                {"id": 4, "etiqueta": "2017: SIN CATEGORIA: BAJA MATRICULA", "color": "#E5E5E5"},
+                {"id": 5, "etiqueta": "2017: SIN CATEGORIA: FALTA DE INFORMACIÓN", "color": "#E5E5E5"},
+                {"id": 6, "etiqueta": "2017: SIN INFO", "color": "#D3D3D3"},
+                {"id": 7, "etiqueta": "2018: MEDIO", "color": "#ADD8E6"},
+                {"id": 8, "etiqueta": "2018: MEDIO-BAJO", "color": "#00008B"},
+                {"id": 9, "etiqueta": "2018: MEDIO-BAJO (NUEVO)", "color": "#00008B"},
+                {"id": 10, "etiqueta": "2018: INSUFICIENTE", "color": "#FFC0CB"},
+                {"id": 11, "etiqueta": "2018: SIN CATEGORIA: BAJA MATRICULA", "color": "#E5E5E5"},
+                {"id": 12, "etiqueta": "2018: SIN CATEGORIA: FALTA DE INFORMACIÓN", "color": "#E5E5E5"},
+                {"id": 13, "etiqueta": "2018: SIN INFO", "color": "#D3D3D3"},
+                {"id": 14, "etiqueta": "2019: ALTO", "color": "#228B22"},
+                {"id": 15, "etiqueta": "2019: MEDIO", "color": "#ADD8E6"},
+                {"id": 16, "etiqueta": "2019: MEDIO-BAJO", "color": "#00008B"},
+                {"id": 17, "etiqueta": "2019: INSUFICIENTE", "color": "#FFC0CB"},
+                {"id": 18, "etiqueta": "2019: SIN CATEGORIA: BAJA MATRICULA", "color": "#E5E5E5"},
+                {"id": 19, "etiqueta": "2019: SIN CATEGORIA: FALTA DE INFORMACIÓN", "color": "#E5E5E5"},
+                {"id": 20, "etiqueta": "2019: SIN INFO", "color": "#D3D3D3"}
+            ],
+            "enlaces": [
+                {"origen_anio": 2016, "origen_categoria": "INSUFICIENTE", "destino_anio": 2017, "destino_categoria": "INSUFICIENTE", "cantidad": 467, "grupo_persistente": false},
+                {"origen_anio": 2016, "origen_categoria": "INSUFICIENTE", "destino_anio": 2017, "destino_categoria": "MEDIO", "cantidad": 5, "grupo_persistente": false},
+                {"origen_anio": 2016, "origen_categoria": "INSUFICIENTE", "destino_anio": 2017, "destino_categoria": "MEDIO-BAJO", "cantidad": 141, "grupo_persistente": false},
+                {"origen_anio": 2016, "origen_categoria": "INSUFICIENTE", "destino_anio": 2017, "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA", "cantidad": 4, "grupo_persistente": false},
+                {"origen_anio": 2016, "origen_categoria": "INSUFICIENTE", "destino_anio": 2017, "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "cantidad": 11, "grupo_persistente": false},
+                {"origen_anio": 2016, "origen_categoria": "INSUFICIENTE", "destino_anio": 2017, "destino_categoria": "SIN INFO", "cantidad": 5, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "INSUFICIENTE", "destino_anio": 2018, "destino_categoria": "INSUFICIENTE", "cantidad": 218, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "INSUFICIENTE", "destino_anio": 2018, "destino_categoria": "MEDIO", "cantidad": 26, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "INSUFICIENTE", "destino_anio": 2018, "destino_categoria": "MEDIO-BAJO", "cantidad": 169, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "INSUFICIENTE", "destino_anio": 2018, "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA", "cantidad": 13, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "INSUFICIENTE", "destino_anio": 2018, "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "cantidad": 4, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "INSUFICIENTE", "destino_anio": 2018, "destino_categoria": "SIN INFO", "cantidad": 37, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "MEDIO", "destino_anio": 2018, "destino_categoria": "INSUFICIENTE", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "MEDIO", "destino_anio": 2018, "destino_categoria": "MEDIO", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "MEDIO", "destino_anio": 2018, "destino_categoria": "MEDIO-BAJO", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "MEDIO", "destino_anio": 2018, "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA", "cantidad": 2, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "MEDIO-BAJO", "destino_anio": 2018, "destino_categoria": "INSUFICIENTE", "cantidad": 30, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "MEDIO-BAJO", "destino_anio": 2018, "destino_categoria": "MEDIO", "cantidad": 23, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "MEDIO-BAJO", "destino_anio": 2018, "destino_categoria": "MEDIO-BAJO", "cantidad": 85, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "MEDIO-BAJO", "destino_anio": 2018, "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA", "cantidad": 3, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA", "destino_anio": 2018, "destino_categoria": "INSUFICIENTE", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA", "destino_anio": 2018, "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA", "cantidad": 2, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA", "destino_anio": 2018, "destino_categoria": "SIN INFO", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "destino_anio": 2018, "destino_categoria": "INSUFICIENTE", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "destino_anio": 2018, "destino_categoria": "MEDIO-BAJO (NUEVO)", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "destino_anio": 2018, "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA", "cantidad": 5, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "destino_anio": 2018, "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "cantidad": 3, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "destino_anio": 2018, "destino_categoria": "SIN INFO", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2017, "origen_categoria": "SIN INFO", "destino_anio": 2018, "destino_categoria": "SIN INFO", "cantidad": 5, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "INSUFICIENTE", "destino_anio": 2019, "destino_categoria": "INSUFICIENTE", "cantidad": 9, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "INSUFICIENTE", "destino_anio": 2019, "destino_categoria": "INSUFICIENTE", "cantidad": 120, "grupo_persistente": true},
+                {"origen_anio": 2018, "origen_categoria": "INSUFICIENTE", "destino_anio": 2019, "destino_categoria": "MEDIO", "cantidad": 9, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "INSUFICIENTE", "destino_anio": 2019, "destino_categoria": "MEDIO-BAJO", "cantidad": 109, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "INSUFICIENTE", "destino_anio": 2019, "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "INSUFICIENTE", "destino_anio": 2019, "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "cantidad": 2, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "INSUFICIENTE", "destino_anio": 2019, "destino_categoria": "SIN INFO", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "MEDIO", "destino_anio": 2019, "destino_categoria": "ALTO", "cantidad": 2, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "MEDIO", "destino_anio": 2019, "destino_categoria": "MEDIO", "cantidad": 35, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "MEDIO", "destino_anio": 2019, "destino_categoria": "MEDIO-BAJO", "cantidad": 11, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "MEDIO", "destino_anio": 2019, "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA", "cantidad": 2, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "MEDIO-BAJO", "destino_anio": 2019, "destino_categoria": "INSUFICIENTE", "cantidad": 24, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "MEDIO-BAJO", "destino_anio": 2019, "destino_categoria": "MEDIO", "cantidad": 60, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "MEDIO-BAJO", "destino_anio": 2019, "destino_categoria": "MEDIO-BAJO", "cantidad": 167, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "MEDIO-BAJO", "destino_anio": 2019, "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA", "cantidad": 3, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "MEDIO-BAJO", "destino_anio": 2019, "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "MEDIO-BAJO (NUEVO)", "destino_anio": 2019, "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA", "destino_anio": 2019, "destino_categoria": "MEDIO", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA", "destino_anio": 2019, "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA", "cantidad": 19, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA", "destino_anio": 2019, "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "SIN CATEGORIA: BAJA MATRICULA", "destino_anio": 2019, "destino_categoria": "SIN INFO", "cantidad": 4, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "destino_anio": 2019, "destino_categoria": "INSUFICIENTE", "cantidad": 2, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "destino_anio": 2019, "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA", "cantidad": 4, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "destino_anio": 2019, "destino_categoria": "SIN CATEGORIA: FALTA DE INFORMACIÓN", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "SIN INFO", "destino_anio": 2019, "destino_categoria": "SIN CATEGORIA: BAJA MATRICULA", "cantidad": 1, "grupo_persistente": false},
+                {"origen_anio": 2018, "origen_categoria": "SIN INFO", "destino_anio": 2019, "destino_categoria": "SIN INFO", "cantidad": 43, "grupo_persistente": false}
+            ]
+        };
+
+        myChart.hideLoading();
+
+        // 1. Preparar Nodos y asignarles color por categoría
+        let nodes = rawData.nodos.map(nodo => {
+            const categoriaOriginal = nodo.etiqueta.split(': ')[1] || nodo.etiqueta;
+            const colorAsignado = categoryColors[categoriaOriginal] || "#A0AEC0";
+
+            let nombreLimpio = categoriaOriginal;
+            if(nombreLimpio.includes("FALTA DE INFORMACIÓN")) nombreLimpio = "Falta Info.";
+            if(nombreLimpio.includes("BAJA MATRICULA")) nombreLimpio = "Baja Matrícula";
+            if(nombreLimpio === "SIN INFO") nombreLimpio = "Sin Datos";
+
+            nombreLimpio = nombreLimpio.charAt(0) + nombreLimpio.slice(1).toLowerCase();
+
+            return {
+                name: nodo.etiqueta, 
+                value: nodo.etiqueta,
+                label: { formatter: nombreLimpio },
+                itemStyle: {
+                    color: colorAsignado,
+                    borderColor: colorAsignado,
+                    borderWidth: 1
+                }
+            };
+        });
+
+        // 1.1 Ordenar nodos por Año primero, y luego por el CategoryRank
+        nodes.sort((a, b) => {
+            const yearA = parseInt(a.name.split(':')[0]);
+            const yearB = parseInt(b.name.split(':')[0]);
+            if (yearA !== yearB) return yearA - yearB;
+            
+            const catA = a.name.split(': ')[1];
+            const catB = b.name.split(': ')[1];
+            
+            return (categoryRank[catA] || 99) - (categoryRank[catB] || 99);
+        });
+
+        // 2. Preparar Enlaces
+        const links = rawData.enlaces.map(enlace => {
+            const isPersistent = enlace.grupo_persistente;
+            const sourceName = `${enlace.origen_anio}: ${enlace.origen_categoria}`;
+            const targetName = `${enlace.destino_anio}: ${enlace.destino_categoria}`;
+            
+            const catColor = categoryColors[enlace.origen_categoria] || "#A0AEC0";
+
+            return {
+                source: sourceName,
+                target: targetName,
+                value: enlace.cantidad,
+                lineStyle: {
+                    color: isPersistent ? categoryColors["INSUFICIENTE"] : "#CBD5E0",
+                    opacity: isPersistent ? 0.7 : 0.2
+                },
+                emphasis: {
+                    lineStyle: {
+                        color: catColor,
+                        opacity: 0.45 
+                    }
+                }
+            };
+        });
+
+        // 3. Configuración del Gráfico
+        const option = {
+            graphic: [
+                { type: 'text', left: '0%', top: '0%', style: { text: '2016', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } },
+                { type: 'text', left: '33.33%', top: '0%', style: { text: '2017', fill: '#4A5568', fontSize: 16, fontWeight: 'bold', textAlign: 'center' } },
+                { type: 'text', left: '66.66%', top: '0%', style: { text: '2018', fill: '#4A5568', fontSize: 16, fontWeight: 'bold', textAlign: 'center' } },
+                { type: 'text', right: '0%', top: '0%', style: { text: '2019', fill: '#4A5568', fontSize: 16, fontWeight: 'bold', textAlign: 'right' } }
+            ],
+            tooltip: {
+                trigger: 'item',
+                triggerOn: 'mousemove',
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                borderColor: '#E2E8F0',
+                textStyle: { color: '#2D3748' },
+                formatter: function (params) {
+                    if (params.dataType === 'edge') {
+                        const origenParts = params.data.source.split(': ');
+                        const destinoParts = params.data.target.split(': ');
+                        
+                        const anioOrigen = origenParts[0];
+                        const catOrigen = origenParts[1].toLowerCase();
+                        const anioDestino = destinoParts[0];
+                        const catDestino = destinoParts[1].toLowerCase();
+                        
+                        return `<b style="font-size:16px">${params.data.value}</b> establecimientos<br/>pasaron de <i>${catOrigen}</i> (${anioOrigen})<br/>a <i>${catDestino}</i> (${anioDestino})`;
+                    } else {
+                        const partes = params.data.name.split(': ');
+                        const anio = partes[0];
+                        let categoria = partes[1] || partes[0];
+                        
+                        if(categoria.includes("FALTA DE INFORMACIÓN")) categoria = "Falta Info.";
+                        if(categoria.includes("BAJA MATRICULA")) categoria = "Baja Matrícula";
+                        if(categoria === "SIN INFO") categoria = "Sin Datos";
+                        categoria = categoria.charAt(0) + categoria.slice(1).toLowerCase();
+
+                        return `<span style="font-size:13px;color:#718096;font-weight:600;">Año ${anio}</span><br/><b style="font-size:16px;color:${params.data.itemStyle.color}">${categoria}</b>`;
+                    }
+                }
+            },
+            series: [
+                {
+                    type: 'sankey',
+                    layoutIterations: 0, 
+                    top: '8%',
+                    bottom: '2%',
+                    emphasis: {
+                        focus: 'adjacency'
+                    },
+                    nodeAlign: 'justify',
+                    data: nodes,
+                    links: links,
+                    lineStyle: {
+                        curveness: 0.5
+                    },
+                    label: {
+                        position: 'right',
+                        fontFamily: 'sans-serif',
+                        fontSize: 11,
+                        color: '#4A5568'
+                    }
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
+    </script>
+</body>
+</html>
