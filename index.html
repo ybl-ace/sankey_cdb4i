@@ -205,7 +205,10 @@
         // 2. Preparar Enlaces
         const links = rawData.enlaces.map(enlace => {
             const isPersistentFinal = enlace.grupo_persistente;
-            const isInsufficientChain = enlace.origen_categoria === "INSUFICIENTE" && enlace.destino_categoria === "INSUFICIENTE";
+            // La cadena previa solo aplica para los saltos 2016->2017 y 2017->2018
+            const isInsufficientChain = enlace.origen_categoria === "INSUFICIENTE" && 
+                                        enlace.destino_categoria === "INSUFICIENTE" && 
+                                        enlace.origen_anio < 2018;
             
             const sourceName = `${enlace.origen_anio}: ${enlace.origen_categoria}`;
             const targetName = `${enlace.destino_anio}: ${enlace.destino_categoria}`;
@@ -219,13 +222,14 @@
                 linkOpacity = 0.7; 
             } else if (isInsufficientChain) {
                 linkColor = categoryColors["INSUFICIENTE"];
-                linkOpacity = 0.4; 
+                linkOpacity = 0.3; 
             }
 
             return {
                 source: sourceName,
                 target: targetName,
                 value: enlace.cantidad,
+                isPersistentFinal: isPersistentFinal, // Guardamos esto para el tooltip
                 lineStyle: {
                     color: linkColor,
                     opacity: linkOpacity
@@ -235,7 +239,6 @@
                 }
             };
         });
-
         // 3. Configuración del Gráfico
         const option = {
             graphic: [
@@ -257,7 +260,14 @@
                         const anioDestino = params.data.target.substring(0, 4);
                         const catDestino = formatCategoryName(params.data.target.substring(6));
                         
-                        return `<b style="font-size:16px">${params.data.value}</b> establecimientos<br/>pasaron de <i>${catOrigen}</i> (${anioOrigen})<br/>a <i>${catDestino}</i> (${anioDestino})`;
+                        let textoDestino = `<i>${catDestino}</i> (${anioDestino})`;
+                        
+                        // Si es el grupo de los 120, aplicamos la etiqueta especial
+                        if (params.data.isPersistentFinal) {
+                            textoDestino = `<i>insuficiente reiterado</i> (${anioDestino})`;
+                        }
+                        
+                        return `<b style="font-size:16px">${params.data.value}</b> establecimientos<br/>pasaron de <i>${catOrigen}</i> (${anioOrigen})<br/>a ${textoDestino}`;
                     } else {
                         // Tooltip para los Nodos
                         const anio = params.data.name.substring(0, 4);
