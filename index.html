@@ -296,8 +296,8 @@
                         fontSize: 11,
                         color: '#4A5568',
                         formatter: function(params) {
-                            // Imprimir el nombre de la categoría junto con su valor total calculado
-                            return `${params.data.nombreLimpio}: ${params.value}`;
+                            // Imprimir el nombre de la categoría
+                            return params.data.nombreLimpio;
                         }
                     }
                 }
