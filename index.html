@@ -171,8 +171,8 @@
             const colorAsignado = categoryColors[categoriaOriginal] || "#A0AEC0";
 
             let nombreLimpio = categoriaOriginal;
-            if(nombreLimpio.includes("FALTA DE INFORMACIÓN")) nombreLimpio = "Falta Info.";
-            if(nombreLimpio.includes("BAJA MATRICULA")) nombreLimpio = "Baja Matrícula";
+            if(nombreLimpio.includes("FALTA DE INFORMACIÓN")) nombreLimpio = "Sin Categoría: Falta Información";
+            if(nombreLimpio.includes("BAJA MATRICULA")) nombreLimpio = "Sin Categoría: Baja Matrícula";
             if(nombreLimpio === "SIN INFO") nombreLimpio = "Sin Datos";
 
             nombreLimpio = nombreLimpio.charAt(0) + nombreLimpio.slice(1).toLowerCase();
@@ -256,8 +256,8 @@
                         const anio = partes[0];
                         let categoria = partes[1] || partes[0];
                         
-                        if(categoria.includes("FALTA DE INFORMACIÓN")) categoria = "Falta Info.";
-                        if(categoria.includes("BAJA MATRICULA")) categoria = "Baja Matrícula";
+                        if(categoria.includes("FALTA DE INFORMACIÓN")) categoria = "Sin Categoría: Falta Información";
+                        if(categoria.includes("BAJA MATRICULA")) categoria = "Sin Categoría: Baja Matrícula";
                         if(categoria === "SIN INFO") categoria = "Sin Datos";
                         categoria = categoria.charAt(0) + categoria.slice(1).toLowerCase();
 
