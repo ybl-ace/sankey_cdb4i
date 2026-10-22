@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sankey Minimalista - Educación Básica</title>
-    <!-- Importar Apache ECharts desde CDN -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
     <style>
         body {
@@ -54,7 +53,6 @@
 
         myChart.showLoading({ text: 'Cargando datos...', color: "#4A5568" });
 
-        // --- PALETA DE COLORES OFICIALES ---
         const categoryColors = {
             "ALTO": "#004b62",                               
             "MEDIO": "#3a75c4",                              
@@ -66,7 +64,6 @@
             "SIN INFO": "#E2E8F0"                            
         };
 
-        // Orden jerárquico estricto de arriba hacia abajo
         const categoryRank = {
             "ALTO": 1,
             "MEDIO": 2,
@@ -165,22 +162,25 @@
 
         myChart.hideLoading();
 
-        // 1. Preparar Nodos y asignarles color por categoría
+        // Función centralizada para limpiar nombres (Asegura consistencia en Nodos y Tooltips)
+        function formatCategoryName(categoriaRaw) {
+            let nombre = categoriaRaw;
+            if(nombre.includes("FALTA DE INFORMACIÓN")) nombre = "Sin categoría: falta info.";
+            else if(nombre.includes("BAJA MATRICULA")) nombre = "Sin categoría: baja matrícula";
+            else if(nombre === "SIN INFO") nombre = "Sin datos";
+            else nombre = nombre.charAt(0) + nombre.slice(1).toLowerCase(); // Capitalizar el resto
+            return nombre;
+        }
+
+        // 1. Preparar Nodos
         let nodes = rawData.nodos.map(nodo => {
             const categoriaOriginal = nodo.etiqueta.split(': ')[1] || nodo.etiqueta;
             const colorAsignado = categoryColors[categoriaOriginal] || "#A0AEC0";
-
-            let nombreLimpio = categoriaOriginal;
-            if(nombreLimpio.includes("FALTA DE INFORMACIÓN")) nombreLimpio = "Sin Categoría: Falta Información";
-            if(nombreLimpio.includes("BAJA MATRICULA")) nombreLimpio = "Sin Categoría: Baja Matrícula";
-            if(nombreLimpio === "SIN INFO") nombreLimpio = "Sin Datos";
-
-            nombreLimpio = nombreLimpio.charAt(0) + nombreLimpio.slice(1).toLowerCase();
-
+            
             return {
                 name: nodo.etiqueta, 
                 value: nodo.etiqueta,
-                label: { formatter: nombreLimpio },
+                label: { formatter: formatCategoryName(categoriaOriginal) },
                 itemStyle: {
                     color: colorAsignado,
                     borderColor: colorAsignado,
@@ -203,36 +203,48 @@
 
         // 2. Preparar Enlaces
         const links = rawData.enlaces.map(enlace => {
-            const isPersistent = enlace.grupo_persistente;
+            const isPersistentFinal = enlace.grupo_persistente; // El tramo final 2018-2019
+            const isInsufficientChain = enlace.origen_categoria === "INSUFICIENTE" && enlace.destino_categoria === "INSUFICIENTE"; // Los tramos previos
+            
             const sourceName = `${enlace.origen_anio}: ${enlace.origen_categoria}`;
             const targetName = `${enlace.destino_anio}: ${enlace.destino_categoria}`;
-            
             const catColor = categoryColors[enlace.origen_categoria] || "#A0AEC0";
+
+            // Estado Normal por defecto
+            let linkColor = "#CBD5E0";
+            let linkOpacity = 0.2;
+
+            // Asignación de colores y opacidades según el tipo de trayectoria
+            if (isPersistentFinal) {
+                linkColor = categoryColors["INSUFICIENTE"];
+                linkOpacity = 0.7; // 70% para el flujo final
+            } else if (isInsufficientChain) {
+                linkColor = categoryColors["INSUFICIENTE"];
+                linkOpacity = 0.6; // 60% para los enlaces 2016-2017 y 2017-2018
+            }
 
             return {
                 source: sourceName,
                 target: targetName,
                 value: enlace.cantidad,
                 lineStyle: {
-                    color: isPersistent ? categoryColors["INSUFICIENTE"] : "#CBD5E0",
-                    opacity: isPersistent ? 0.7 : 0.2
+                    color: linkColor,
+                    opacity: linkOpacity
                 },
                 emphasis: {
-                    lineStyle: {
-                        color: catColor,
-                        opacity: 0.45 
-                    }
+                    lineStyle: { color: catColor, opacity: 0.45 }
                 }
             };
         });
 
         // 3. Configuración del Gráfico
         const option = {
+            // Textos superiores matemáticamente alineados con las columnas del Sankey
             graphic: [
-                { type: 'text', left: '0%', top: '0%', style: { text: '2016', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } },
-                { type: 'text', left: '33.33%', top: '0%', style: { text: '2017', fill: '#4A5568', fontSize: 16, fontWeight: 'bold', textAlign: 'center' } },
-                { type: 'text', left: '66.66%', top: '0%', style: { text: '2018', fill: '#4A5568', fontSize: 16, fontWeight: 'bold', textAlign: 'center' } },
-                { type: 'text', right: '0%', top: '0%', style: { text: '2019', fill: '#4A5568', fontSize: 16, fontWeight: 'bold', textAlign: 'right' } }
+                { type: 'text', left: '5%', top: '0%', style: { text: '2016', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } },
+                { type: 'text', left: '30%', top: '0%', style: { text: '2017', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } },
+                { type: 'text', left: '55%', top: '0%', style: { text: '2018', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } },
+                { type: 'text', left: '80%', top: '0%', style: { text: '2019', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } }
             ],
             tooltip: {
                 trigger: 'item',
@@ -246,20 +258,15 @@
                         const destinoParts = params.data.target.split(': ');
                         
                         const anioOrigen = origenParts[0];
-                        const catOrigen = origenParts[1].toLowerCase();
+                        const catOrigen = formatCategoryName(origenParts[1]);
                         const anioDestino = destinoParts[0];
-                        const catDestino = destinoParts[1].toLowerCase();
+                        const catDestino = formatCategoryName(destinoParts[1]);
                         
                         return `<b style="font-size:16px">${params.data.value}</b> establecimientos<br/>pasaron de <i>${catOrigen}</i> (${anioOrigen})<br/>a <i>${catDestino}</i> (${anioDestino})`;
                     } else {
                         const partes = params.data.name.split(': ');
                         const anio = partes[0];
-                        let categoria = partes[1] || partes[0];
-                        
-                        if(categoria.includes("FALTA DE INFORMACIÓN")) categoria = "Sin Categoría: Falta Información";
-                        if(categoria.includes("BAJA MATRICULA")) categoria = "Sin Categoría: Baja Matrícula";
-                        if(categoria === "SIN INFO") categoria = "Sin Datos";
-                        categoria = categoria.charAt(0) + categoria.slice(1).toLowerCase();
+                        const categoria = formatCategoryName(partes[1] || partes[0]);
 
                         return `<span style="font-size:13px;color:#718096;font-weight:600;">Año ${anio}</span><br/><b style="font-size:16px;color:${params.data.itemStyle.color}">${categoria}</b>`;
                     }
@@ -271,15 +278,14 @@
                     layoutIterations: 0, 
                     top: '8%',
                     bottom: '2%',
-                    emphasis: {
-                        focus: 'adjacency'
-                    },
+                    // Sincronizamos los márgenes del Sankey con las posiciones de los textos
+                    left: '5%',
+                    right: '20%', 
+                    emphasis: { focus: 'adjacency' },
                     nodeAlign: 'justify',
                     data: nodes,
                     links: links,
-                    lineStyle: {
-                        curveness: 0.5
-                    },
+                    lineStyle: { curveness: 0.5 },
                     label: {
                         position: 'right',
                         fontFamily: 'sans-serif',
