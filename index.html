@@ -15,7 +15,7 @@
         }
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 0px;
         }
         .header h1 {
             font-size: 24px;
@@ -162,25 +162,26 @@
 
         myChart.hideLoading();
 
-        // Función centralizada para limpiar nombres (Asegura consistencia en Nodos y Tooltips)
-        function formatCategoryName(categoriaRaw) {
-            let nombre = categoriaRaw;
-            if(nombre.includes("FALTA DE INFORMACIÓN")) nombre = "Sin categoría: falta info.";
-            else if(nombre.includes("BAJA MATRICULA")) nombre = "Sin categoría: baja matrícula";
-            else if(nombre === "SIN INFO") nombre = "Sin datos";
-            else nombre = nombre.charAt(0) + nombre.slice(1).toLowerCase(); // Capitalizar el resto
-            return nombre;
+        // Limpieza inteligente: Se usa substring(6) para saltar el "YYYY: " sin romper los dos puntos de la categoría
+        function formatCategoryName(categoriaOriginal) {
+            let nombre = categoriaOriginal;
+            if(nombre.includes("FALTA DE INFORMACIÓN")) return "Sin categoría: falta info.";
+            if(nombre.includes("BAJA MATRICULA")) return "Sin categoría: baja matrícula";
+            if(nombre === "SIN INFO") return "Sin datos";
+            
+            return nombre.charAt(0) + nombre.slice(1).toLowerCase();
         }
 
         // 1. Preparar Nodos
         let nodes = rawData.nodos.map(nodo => {
-            const categoriaOriginal = nodo.etiqueta.split(': ')[1] || nodo.etiqueta;
+            // Extraer todo después del año ("2016: ")
+            const categoriaOriginal = nodo.etiqueta.substring(6);
             const colorAsignado = categoryColors[categoriaOriginal] || "#A0AEC0";
             
             return {
                 name: nodo.etiqueta, 
-                value: nodo.etiqueta,
-                label: { formatter: formatCategoryName(categoriaOriginal) },
+                // ECharts calcula automáticamente el "value" del nodo basándose en los enlaces
+                nombreLimpio: formatCategoryName(categoriaOriginal),
                 itemStyle: {
                     color: colorAsignado,
                     borderColor: colorAsignado,
@@ -189,38 +190,36 @@
             };
         });
 
-        // 1.1 Ordenar nodos por Año primero, y luego por el CategoryRank
+        // Orden estricto
         nodes.sort((a, b) => {
-            const yearA = parseInt(a.name.split(':')[0]);
-            const yearB = parseInt(b.name.split(':')[0]);
+            const yearA = parseInt(a.name.substring(0, 4));
+            const yearB = parseInt(b.name.substring(0, 4));
             if (yearA !== yearB) return yearA - yearB;
             
-            const catA = a.name.split(': ')[1];
-            const catB = b.name.split(': ')[1];
+            const catA = a.name.substring(6);
+            const catB = b.name.substring(6);
             
             return (categoryRank[catA] || 99) - (categoryRank[catB] || 99);
         });
 
         // 2. Preparar Enlaces
         const links = rawData.enlaces.map(enlace => {
-            const isPersistentFinal = enlace.grupo_persistente; // El tramo final 2018-2019
-            const isInsufficientChain = enlace.origen_categoria === "INSUFICIENTE" && enlace.destino_categoria === "INSUFICIENTE"; // Los tramos previos
+            const isPersistentFinal = enlace.grupo_persistente;
+            const isInsufficientChain = enlace.origen_categoria === "INSUFICIENTE" && enlace.destino_categoria === "INSUFICIENTE";
             
             const sourceName = `${enlace.origen_anio}: ${enlace.origen_categoria}`;
             const targetName = `${enlace.destino_anio}: ${enlace.destino_categoria}`;
             const catColor = categoryColors[enlace.origen_categoria] || "#A0AEC0";
 
-            // Estado Normal por defecto
             let linkColor = "#CBD5E0";
             let linkOpacity = 0.2;
 
-            // Asignación de colores y opacidades según el tipo de trayectoria
             if (isPersistentFinal) {
                 linkColor = categoryColors["INSUFICIENTE"];
-                linkOpacity = 0.7; // 70% para el flujo final
+                linkOpacity = 0.7; 
             } else if (isInsufficientChain) {
                 linkColor = categoryColors["INSUFICIENTE"];
-                linkOpacity = 0.6; // 60% para los enlaces 2016-2017 y 2017-2018
+                linkOpacity = 0.4; 
             }
 
             return {
@@ -239,12 +238,11 @@
 
         // 3. Configuración del Gráfico
         const option = {
-            // Textos superiores matemáticamente alineados con las columnas del Sankey
             graphic: [
-                { type: 'text', left: '5%', top: '0%', style: { text: '2016', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } },
-                { type: 'text', left: '30%', top: '0%', style: { text: '2017', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } },
-                { type: 'text', left: '55%', top: '0%', style: { text: '2018', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } },
-                { type: 'text', left: '80%', top: '0%', style: { text: '2019', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } }
+                { type: 'text', left: '5%', top: '7%', style: { text: '2016', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } },
+                { type: 'text', left: '30%', top: '7%', style: { text: '2017', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } },
+                { type: 'text', left: '55%', top: '7%', style: { text: '2018', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } },
+                { type: 'text', left: '80%', top: '7%', style: { text: '2019', fill: '#4A5568', fontSize: 16, fontWeight: 'bold' } }
             ],
             tooltip: {
                 trigger: 'item',
@@ -254,21 +252,18 @@
                 textStyle: { color: '#2D3748' },
                 formatter: function (params) {
                     if (params.dataType === 'edge') {
-                        const origenParts = params.data.source.split(': ');
-                        const destinoParts = params.data.target.split(': ');
-                        
-                        const anioOrigen = origenParts[0];
-                        const catOrigen = formatCategoryName(origenParts[1]);
-                        const anioDestino = destinoParts[0];
-                        const catDestino = formatCategoryName(destinoParts[1]);
+                        const anioOrigen = params.data.source.substring(0, 4);
+                        const catOrigen = formatCategoryName(params.data.source.substring(6));
+                        const anioDestino = params.data.target.substring(0, 4);
+                        const catDestino = formatCategoryName(params.data.target.substring(6));
                         
                         return `<b style="font-size:16px">${params.data.value}</b> establecimientos<br/>pasaron de <i>${catOrigen}</i> (${anioOrigen})<br/>a <i>${catDestino}</i> (${anioDestino})`;
                     } else {
-                        const partes = params.data.name.split(': ');
-                        const anio = partes[0];
-                        const categoria = formatCategoryName(partes[1] || partes[0]);
+                        // Tooltip para los Nodos
+                        const anio = params.data.name.substring(0, 4);
+                        const categoria = params.data.nombreLimpio;
 
-                        return `<span style="font-size:13px;color:#718096;font-weight:600;">Año ${anio}</span><br/><b style="font-size:16px;color:${params.data.itemStyle.color}">${categoria}</b>`;
+                        return `<span style="font-size:13px;color:#718096;font-weight:600;">Año ${anio}</span><br/><b style="font-size:16px;color:${params.color}">${categoria}</b><br/><span style="font-size:14px;color:#4A5568;margin-top:4px;display:inline-block;">Total: <b>${params.value}</b></span>`;
                     }
                 }
             },
@@ -276,9 +271,8 @@
                 {
                     type: 'sankey',
                     layoutIterations: 0, 
-                    top: '8%',
-                    bottom: '2%',
-                    // Sincronizamos los márgenes del Sankey con las posiciones de los textos
+                    top: '15%',    // 15% de margen superior (respiración)
+                    bottom: '15%', // 15% de margen inferior (respiración)
                     left: '5%',
                     right: '20%', 
                     emphasis: { focus: 'adjacency' },
@@ -290,7 +284,11 @@
                         position: 'right',
                         fontFamily: 'sans-serif',
                         fontSize: 11,
-                        color: '#4A5568'
+                        color: '#4A5568',
+                        formatter: function(params) {
+                            // Imprimir el nombre de la categoría junto con su valor total calculado
+                            return `${params.data.nombreLimpio}: ${params.value}`;
+                        }
                     }
                 }
             ]
